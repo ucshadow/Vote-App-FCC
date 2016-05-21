@@ -1,5 +1,7 @@
 # A vote App for freecodecamp.com by Catalin
 
+## status --- incomplete
+
 ## Using: 
 
 - React (for UI)
