@@ -1,0 +1,24 @@
+/* CSS declarations go here */
+.poll-options {
+  padding: 5px;
+}
+
+.vote-option {
+  background: #354344;
+  color: white;
+  height: 30px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.click-to-vote {
+  background: #085380;
+  height: 26px;
+  width: 26px;
+
+}
+
+.home-div {
+  margin-left: 100px;
+}
