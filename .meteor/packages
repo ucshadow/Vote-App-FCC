@@ -19,3 +19,6 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 react-meteor-data
 twbs:bootstrap
+accounts-ui
+accounts-password
+d3js:d3

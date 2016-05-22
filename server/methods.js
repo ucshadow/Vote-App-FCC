@@ -13,7 +13,9 @@ Meteor.methods({
   },
 
   'voteData.insert'(value) {
-    VoteData.insert(value)
+    if(value.author && value.options) {
+      VoteData.insert(value)
+    }
   }
 
 });

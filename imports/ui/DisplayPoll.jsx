@@ -1,7 +1,9 @@
 import React from 'react'
 import { render } from 'react-dom'
+import { Link } from 'react-router'
 
-import { VoteData } from '../api/voteData.js'
+import { VoteData } from '../api/voteData.js';
+import ToD3 from './ToD3.jsx';
 
 
 export default class DisplayPoll extends React.Component {
@@ -11,7 +13,7 @@ export default class DisplayPoll extends React.Component {
     this.state = {voted: false};
   }
 
-  checkOPT(){
+  checkOPT() {
     return document.querySelector('input[name="opt"]:checked')
   }
 
@@ -28,6 +30,10 @@ export default class DisplayPoll extends React.Component {
     } else {
       console.log('pick one!')
     }
+  }
+
+  editPoll() {
+
   }
 
   render() {
@@ -59,6 +65,10 @@ export default class DisplayPoll extends React.Component {
         <button onClick={ () => this.voteFor(this.props.data._id,
         this.checkOPT() ? this.checkOPT().value : null) }>
           Submit </button>
+        <div>
+          <Link to={"/edit/" + this.props.data.queryID}> Edit </Link>
+        </div>
+        <ToD3 key={Math.random()} d={this.props.data} />
       </div>
     )
   }

@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, browserHistory } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 
+import '../imports/startup/accounts-config.js';
 import { VoteData } from '../imports/api/voteData.js';
 import App from '../imports/ui/App.jsx';
 import Home from '../imports/ui/Home.jsx';
@@ -10,6 +11,8 @@ import About from '../imports/ui/About.jsx';
 import Create from '../imports/ui/Create.jsx';
 import { NotFound } from '../imports/ui/NotFound.js';
 import Poll from '../imports/ui/Poll.jsx';
+import EditPoll from '../imports/ui/EditPoll.jsx';
+import MyPolls from '../imports/ui/MyPolls.jsx';
 
 
 export const renderRoutes = () => (
@@ -18,7 +21,9 @@ export const renderRoutes = () => (
       <IndexRoute component={ Home } />
       <Route path="about" component={ About } />
       <Route path="create" component={ Create } />
+      <Route path="myPolls" component={ MyPolls } />
       <Route path="polls/:pollID" component={ Poll } />
+      <Route path="edit/:pollID" component={ EditPoll } />
       <Route path="*" component={ NotFound } />
 
     </Route>
@@ -39,7 +44,7 @@ Meteor.startup(() => {
           pollType: "firstPage",
           queryID: Math.random().toString().substring(2, 17)})
       }
-      //console.log(VoteData.find().fetch())
+      console.log(VoteData.find().fetch())
     }
   });
 
