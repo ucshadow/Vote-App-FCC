@@ -14,6 +14,7 @@ export default class App extends React.Component {
         <Link to="/create"> Add Poll </Link>
         <Link to="/"> Home </Link>
         <Link to="/myPolls"> My Polls </Link>
+        <Link to="/browsePolls"> Browse Polls </Link>
         <AccountsUIWrapper />
         {this.props.children}
       </div>

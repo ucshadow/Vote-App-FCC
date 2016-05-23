@@ -13,6 +13,7 @@ import { NotFound } from '../imports/ui/NotFound.js';
 import Poll from '../imports/ui/Poll.jsx';
 import EditPoll from '../imports/ui/EditPoll.jsx';
 import MyPolls from '../imports/ui/MyPolls.jsx';
+import BrowsePolls from '../imports/ui/BrowsePolls.jsx'
 
 
 export const renderRoutes = () => (
@@ -22,6 +23,7 @@ export const renderRoutes = () => (
       <Route path="about" component={ About } />
       <Route path="create" component={ Create } />
       <Route path="myPolls" component={ MyPolls } />
+      <Route path="browsePolls" component={ BrowsePolls } />
       <Route path="polls/:pollID" component={ Poll } />
       <Route path="edit/:pollID" component={ EditPoll } />
       <Route path="*" component={ NotFound } />
@@ -38,7 +40,7 @@ Meteor.startup(() => {
       if(VoteData.find().fetch().length === 0){
         Meteor.call('voteData.insert', {
           author: "admin",
-          options: [ ["Winter", 0], ["Spring", 0], ["Summer", 0], ["Autumn", 0] ],
+          options: [ ["Winter", 2], ["Spring", 4], ["Summer", 14], ["Autumn", 3] ],
           createdAt: new Date(),
           title: "Best Season",
           pollType: "firstPage",

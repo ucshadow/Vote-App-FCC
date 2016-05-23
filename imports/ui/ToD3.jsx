@@ -1,4 +1,5 @@
 import React from 'react'
+import assignColor from '../api/assignColor.js';
 
 
 export default class ToD3 extends React.Component {
@@ -8,6 +9,25 @@ export default class ToD3 extends React.Component {
 
     this.state = {chart: "pie"};
     this.displayChart = this.displayChart.bind(this);
+
+    d3.selectAll("svg > *").remove();  //empty svg or it will redraw over itself
+
+    this.svg = d3.select('#_svg')
+        //.data([data])
+        .attr("width", 600)
+        .attr("height", 600)
+        .append("svg:g")
+        .attr("transform", "translate(" + 300 + "," + 300 + ")");
+
+
+  }
+
+  componentWillUnmount(){
+    d3.select('#_svg')
+        .attr("width", 0)
+        .attr("height", 0);
+
+    d3.selectAll("svg > *").remove();
   }
 
   displayChart() {
@@ -23,25 +43,31 @@ export default class ToD3 extends React.Component {
         return x;
       }
 
-      let w = 800;
-      let h = 800;
+      let w = 600;
+      let h = 600;
       let r = Math.min(w, h) / 2;
-      let color = d3.scale.category20c();
       let data = sortValues();
+      let svg = this.svg;
 
-      let svg = d3.select('#_svg')
-        .data([data])
-        .attr("width", w)
-        .attr("height", h)
-        .append("svg:g")
-        .attr("transform", "translate(" + r + "," + r + ")");
+
+
+      svg.data([data]);
 
       let pie = d3.layout.pie()
         .value(function(d){return d.value;});
 
       // declare an arc generator function
       let arc = d3.svg.arc()
-        .outerRadius(r - 40);
+        .outerRadius(r - 10)
+        .innerRadius(0);
+
+      let optionArc = d3.svg.arc()
+        .outerRadius(r - 60)
+        .innerRadius(r - 60);
+
+      let scoreArc = d3.svg.arc()
+        .outerRadius(r - 250)
+        .innerRadius(r - 250);
 
       // select paths, use arc generator to draw
       let arcs = svg.selectAll("g.slice")
@@ -52,19 +78,37 @@ export default class ToD3 extends React.Component {
 
       arcs.append("svg:path")
           .attr("fill", function(d, i){
-              return color(i);
+              return assignColor(i);
           })
           .attr("d", function (d) {
               return arc(d);
           });
 
       // add the text
-      arcs.append("svg:text").attr("transform", function(d){
-            d.innerRadius = 0;
-            d.outerRadius = r;
-          return "translate(" + arc.centroid(d) + ")";}).attr("text-anchor", "middle").text( function(d, i) {
-          return data[i].label;}
-          );
+      arcs.append("svg:text")
+        .attr("transform", function(d){return "translate(" + optionArc.centroid(d) + ")";})
+        .attr("text-anchor", "middle")
+        .attr("dy", ".35em")
+        .attr("fill", "white")
+        .text( function(d, i) {
+          if(data[i].value <= 0) {
+            return ""
+          } else {
+            return data[i].label
+          }
+        });
+
+      arcs.append("svg:text")
+        .attr("transform", function(d){return "translate(" + scoreArc.centroid(d) + ")";})
+        .attr("text-anchor", "middle")
+        .attr("dy", "1em")
+        .text( function(d, i) {
+          if(data[i].value <= 0) {
+            return ""
+          } else {
+            return data[i].value
+          }
+        });
 
 
     }

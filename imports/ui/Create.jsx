@@ -76,37 +76,41 @@ class Create extends React.Component {
   }
 
   submitPoll() {
-    let author = (Meteor.user() ? Meteor.user().username : "anonymous");
-    // Checks if logged
-    let createdAt = new Date();
-    let queryID = Math.random().toString().substring(2, 17);
-    // assigns a random string that will be used as URL for the poll
-    let all = this.state.rows;
-    let pollObject = {options: []};
-    for(let i = 0; i < all.length; i++){
-      let opt = document.getElementById(all[i]).value;
-      if(opt !== "") {
-        pollObject.options.push([opt, 0])
+    if(Meteor.user()){
+      // read the requirements and it appears that you can't create a poll
+      // as anonymous, so here is the check
+      let author = (Meteor.user() ? Meteor.user().username : "anonymous");
+      // Checks if logged
+      let createdAt = new Date();
+      let queryID = Math.random().toString().substring(2, 17);
+      // assigns a random string that will be used as URL for the poll
+      let all = this.state.rows;
+      let pollObject = {options: []};
+      for(let i = 0; i < all.length; i++){
+        let opt = document.getElementById(all[i]).value;
+        if(opt !== "") {
+          pollObject.options.push([opt, 0])
+        }
       }
-    }
-    pollObject.title = document.getElementById("poll-title").value;
-    pollObject.author = author;
-    pollObject.createdAt = createdAt;
-    pollObject.queryID = queryID;
-    if(pollObject.title !== "" && pollObject.options.length >= 2){
-      // Check if the Poll has at least a title and 2 options
-      Meteor.call('voteData.insert', pollObject);
-      if(this.props.d){
-        // if Edit mode it will jump to the new Poll directly
-        window.location.href = window.location.origin + "/polls/" + queryID;
+      pollObject.title = document.getElementById("poll-title").value;
+      pollObject.author = author;
+      pollObject.createdAt = createdAt;
+      pollObject.queryID = queryID;
+      if(pollObject.title !== "" && pollObject.options.length >= 2){
+        // Check if the Poll has at least a title and 2 options
+        Meteor.call('voteData.insert', pollObject);
+        if(this.props.d){
+          // if Edit mode it will jump to the new Poll directly
+          window.location.href = window.location.origin + "/polls/" + queryID;
+        } else {
+          // if Create mode it will show a message with the url to the new Poll
+          // maybe this should jump to the poll directly too ? todo
+          this.showURL([queryID]);
+        }
       } else {
-        // if Create mode it will show a message with the url to the new Poll
-        // maybe this should jump to the poll directly too ? todo
-        this.showURL([queryID]);
+        console.log('give a title and at least 2 options')
+        // todo add error message
       }
-    } else {
-      console.log('give a title and at least 2 options')
-      // todo add error message
     }
   }
 
@@ -117,25 +121,32 @@ class Create extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        Hi from Create
-        <div className="create-container col-lg-6">
-          <div className="input-group input-group-lg">
-            <span className="input-group-addon" id="pollTitle">Title</span>
-            <input type="text" className="form-control" placeholder="Title" id="poll-title"
-            defaultValue={this.props.d ? this.props.d.title : null}/>
-          </div>
-          {this.addRowOptions()}
-        </div>
-        <button onClick={this.addOptionRow}> Add Row </button>
-        <button onClick={this.submitPoll}> Submit </button>
-        <br />
+    if(Meteor.user()){
+      return (
         <div>
-          {this.state.showURL ? window.location.origin + "/polls/" + this.state.showURL : null}
+          <div className="create-container col-lg-6">
+            <div className="input-group input-group-lg">
+              <span className="input-group-addon" id="pollTitle">Title</span>
+              <input type="text" className="form-control" placeholder="Title" id="poll-title"
+              defaultValue={this.props.d ? this.props.d.title : null}/>
+            </div>
+            {this.addRowOptions()}
+          </div>
+          <button onClick={this.addOptionRow}> Add Row </button>
+          <button onClick={this.submitPoll}> Submit </button>
+          <br />
+          <div>
+            {this.state.showURL ? window.location.origin + "/polls/" + this.state.showURL : null}
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div>
+          <h1> Please Log In to create a Poll </h1>
+        </div>
+      )
+    }
   }
 }
 
