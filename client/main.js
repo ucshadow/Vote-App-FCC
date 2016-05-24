@@ -16,6 +16,7 @@ import MyPolls from '../imports/ui/MyPolls.jsx';
 import BrowsePolls from '../imports/ui/BrowsePolls.jsx'
 
 
+
 export const renderRoutes = () => (
   <Router history={ browserHistory }>
     <Route path="/" component={ App }>
@@ -44,15 +45,27 @@ Meteor.startup(() => {
           createdAt: new Date(),
           title: "Best Season",
           pollType: "firstPage",
-          queryID: Math.random().toString().substring(2, 17)})
+          queryID: Math.random().toString().substring(2, 17)});
       }
-      console.log(VoteData.find().fetch())
+      //console.log(VoteData.find().fetch())
     }
   });
 
   render(renderRoutes(), document.getElementById('app'));
 
 
+});
+
+Tracker.autorun(function(c) {
+  // needed to make a trigger for login events because the Blaze template
+  // is not interacting with React and so login and logout wont trigger anything
+  // like a rerender of a React component.
+  // ugly, but only triggers a refresh of the current page on login and logout.
+  var userId = Meteor.userId();
+  if (c.firstRun){
+    return;
+  }
+  userId ? location.reload() : location.reload()
 });
 
 

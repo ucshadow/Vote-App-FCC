@@ -10,12 +10,23 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        <Link to="/about"> About </Link>
-        <Link to="/create"> Add Poll </Link>
-        <Link to="/"> Home </Link>
-        <Link to="/myPolls"> My Polls </Link>
-        <Link to="/browsePolls"> Browse Polls </Link>
-        <AccountsUIWrapper />
+        <div className="whole-nav">
+          <nav role="navigation" className="navbar navbar-default" style={{
+          background: "none", border: "none"}}>
+            <div id="navbarCollapse" className="collapse navbar-collapse">
+              <ul className="nav navbar-nav">
+                <li className="nav-button"><Link to="/" > Home </Link></li>
+                <li className="nav-button"><Link to="/browsePolls"> Browse Polls </Link></li>
+                <li className="nav-button"><Link to="/create"> Add Poll </Link></li>
+                <li className="nav-button"><Link to="/myPolls"> My Polls </Link></li>
+                <li className="nav-button"><Link to="/about"> About </Link></li>
+              </ul>
+              <ul className="nav navbar-nav navbar-right">
+                  <li className="nav-account"><AccountsUIWrapper /></li>
+              </ul>
+            </div>
+          </nav>
+      </div>
         {this.props.children}
       </div>
     )

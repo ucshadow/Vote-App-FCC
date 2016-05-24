@@ -1,28 +1,82 @@
-/* CSS declarations go here */
+body {
+  color: #77C4D3;
+  background: #333745;
+}
+
+.chart-text {
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.not-found {
+  font-size: 6em;
+  float: left;
+}
+
+.not-found-pic {
+  background-image: url("/not_found.png");
+  width: 300px;
+  height: 300px;
+  float: left;
+}
+
+
+
+
+
+
 .poll-options {
   padding: 5px;
+  position: relative;
+  height: 1.6em;
+  font-size: 2em;
+  margin-left: 50px;
 }
 
 .vote-option {
-  background: #0c3f44;
-  color: white;
+  background: #DAEDE2;
   height: auto;
-  font-size: 20px;
-  font-weight: bold;
-  margin-left: 30px;
-  padding-left: 10px;
+  position: absolute;
+  z-index: 99;
+  border-left: 2px solid black;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
 }
 
-.click-to-vote {
-  background: #085380;
-  height: 26px;
-  width: 26px;
+.o-txt {
+  border: 2px solid black;
+  width: 100%;
+  position: absolute;
+  height: auto;
+  z-index: 100;
+  padding-left: 0.2em;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
 
+.empty-bar {
+  width: 100%;
+  position: absolute;
+  height: auto;
+  background: #2c2d3a;
+  z-index: 98;
+}
+
+
+
+
+
+
+
+.click-to-vote {
+  background: #DAEDE2;
+  height: 1em;
+  width: 1em;
+  position: absolute;
+  left: -1em;
 }
 
 .home-div {
-  margin-left: 100px;
-  margin-top: 100px;
+  margin-left: 5em;
 }
 
 .slice path {
@@ -45,4 +99,75 @@
   font-size: 20px;
   font-weight: bold;
   margin-left: 2px;
+}
+
+.nav-button {
+  width: 10em;
+  background: #F6F792;
+  font-size: 1.3em;
+  border: 3px solid #002F2F;
+  text-align: center;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.nav-button > a {
+  color: #333745!important;
+}
+
+.nav-account {
+  width: 10em;
+  background: #DAEDE2;
+  font-size: 1.2em;
+  color: #77C4D3;
+  text-align: center;
+  margin-right: 1em;
+  font-weight: bold;
+}
+
+#navbarCollapse {
+  background: #DAEDE2;
+  margin-right: 5em;
+  padding: 4px;
+}
+
+#login-dropdown-list {
+  top: 8em;
+  left: -6em;
+  position: absolute;
+  background: #DAEDE2;
+}
+
+.login-button {
+  background: #DAEDE2!important;
+  font-size: 1.2em!important;
+  color: #77C4D3!important;
+  border: 5px solid #002F2F!important;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+.login-close-text {
+  font-size: 1.2em!important;
+  color: #046380!important;
+  margin-left: 5px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.all-polls a {
+  text-decoration: none;
+}
+
+.all-polls {
+  margin-right: 5em;
+  color: #333745;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0!important;
+}
+
+.poll-author {
+  float: right;
+  color: #EA2E49;
 }

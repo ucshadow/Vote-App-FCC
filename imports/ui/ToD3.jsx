@@ -88,6 +88,7 @@ export default class ToD3 extends React.Component {
       arcs.append("svg:text")
         .attr("transform", function(d){return "translate(" + optionArc.centroid(d) + ")";})
         .attr("text-anchor", "middle")
+        .attr("class", "chart-text")
         .attr("dy", ".35em")
         .attr("fill", "white")
         .text( function(d, i) {

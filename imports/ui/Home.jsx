@@ -8,14 +8,6 @@ import DisplayPoll from './DisplayPoll.jsx';
 
 class Home extends Component {
 
-  constructor(props) {
-    super(props);
-  }
-
-  show(){
-    console.log(this.state);
-  }
-
   activateDisplayPoll(){
     return VoteData.find({"pollType": "firstPage"}).fetch().map((xx) => {
       return <DisplayPoll key={xx._id} data={xx} />
@@ -25,8 +17,6 @@ class Home extends Component {
   render() {
     return (
       <div>
-        Hi from home
-        <button onClick={this.show} > Props </button>
         {this.activateDisplayPoll()}
       </div>
     )

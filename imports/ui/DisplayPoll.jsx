@@ -7,16 +7,43 @@ import assignColor from '../api/assignColor.js';
 import ToD3 from './ToD3.jsx';
 
 
+// TODO MAP TO CLASS !!
+// mapped to Class but the issue was a > instead of a >= ...
+
 export default class DisplayPoll extends React.Component {
 
-  constructor(props){
-    super(props);
+  constructor(){
+    super();
+
+    this.mapSingleton = this.mapSingleton.bind(this);
+  }
+
+  mapSingleton() {
+    return [this.props.data].map((d) => {
+      return <Singleton key={Math.random()} data={d} />
+    })
+  }
+
+  render() {
+    return (
+      <div>
+        {this.mapSingleton()}
+      </div>
+    )
+  }
+}
+
+
+class Singleton extends React.Component {
+
+  constructor() {
+    super();
 
     if(!localStorage.p) {
       localStorage.setItem("p", "[]")
     }
 
-    this.state = {voted: (JSON.parse(localStorage.p).indexOf(window.location.pathname) > 0)};
+    this.state = {voted: (JSON.parse(localStorage.p).indexOf(window.location.pathname) >= 0)};
     this.hasVoted = this.hasVoted.bind(this);
     this.totalVotes = this.totalVotes.bind(this);
   }
@@ -30,16 +57,12 @@ export default class DisplayPoll extends React.Component {
   }
 
   voteFor(ID, opt, event) {
-
-
     let l = JSON.parse(localStorage.p);
-
-    if(l.indexOf(window.location.pathname) < 0){
-      l.push(window.location.pathname);
-      localStorage.setItem("p", JSON.stringify(l));
-      console.log(localStorage.p);
-      if(opt){
-        //this.changeState();
+    if(opt){
+      if(l.indexOf(window.location.pathname) < 0) {
+        l.push(window.location.pathname);
+        localStorage.setItem("p", JSON.stringify(l));
+        console.log(localStorage.p);
         const allOptions = VoteData.findOne({_id: ID}).options;
         for(let i = 0; i < allOptions.length; i++){
           if(allOptions[i][0] === opt){
@@ -47,13 +70,12 @@ export default class DisplayPoll extends React.Component {
             Meteor.call('voteData.update', this.props.data._id, allOptions);
           }
         }
+        this.hasVoted();
       } else {
-        console.log('pick one!')
+        $("#alerts").text("PICK ONE!");
       }
-      this.hasVoted();
     } else {
-      console.log("already voted");
-      this.hasVoted();
+      $("#alerts").text(this.state.voted ? "already voted" : "pick one");
     }
   }
 
@@ -66,16 +88,17 @@ export default class DisplayPoll extends React.Component {
   }
 
   render() {
-    console.log(this.state.voted);
     return (
       <div className="display-poll">
-        <h1>A poll by {this.props.data.author} </h1>
+        <h1 style={{color: "#EA2E49"}}>A poll by {this.props.data.author} </h1>
         <h2> {this.props.data.title} </h2>
-
-        <div>
+        <div className="some-other-container">
           {this.props.data.options.map((option) => {
             return (
               <div className="row poll-options" key={option[0] + '-' + Math.random()}>
+
+                <div className="o-txt">{option[0]}</div>
+                <div className="empty-bar"> &#8195; </div>
 
                 {this.state.voted === false
                   ?
@@ -85,22 +108,29 @@ export default class DisplayPoll extends React.Component {
                     </div>
                   :
                 <div></div>}
-                  <div className="vote-option" style={{background:
-                    (this.state.voted ? assignColor(this.props.data.options.indexOf(option)) :
-                    "#085380")}}> {option[0]}
+                  <div className="vote-option" style={{
+                  background:
+                    (this.state.voted ? assignColor(this.props.data.options.indexOf(option)) : "#484D61"),
+                  width: (this.state.voted ? ((option[1] * 100 / this.totalVotes()).toString() + "%") : "100%" )}}>
+                    &#8195;
                   </div>
               </div>
               )
             })}
         </div>
-        <button onClick={ () => this.voteFor(this.props.data._id,
-        this.checkOPT() ? this.checkOPT().value : null) }>
-          Submit </button>
+        <br />
         <div className="edit-button">
-          <Link to={"/edit/" + this.props.data.queryID}> Edit </Link>
+          <button className="btn-primary" onClick={ () => this.voteFor(this.props.data._id,
+            this.checkOPT() ? this.checkOPT().value : null) }>
+            Submit
+          </button>
+          <Link to={"/edit/" + this.props.data.queryID}><button className="btn-success"> Edit</button></Link>
         </div>
         <ToD3 key={Math.random()} d={this.props.data} />
+        <br />
+        <div id="alerts" className="alerts"></div>
       </div>
     )
   }
+
 }

@@ -35,7 +35,7 @@ class MyPolls extends React.Component {
     return (
       <div>
         {Meteor.user() ? this.isLogged() : "Please Log In to see your polls"}
-        {Meteor.user() ? this.performance() : "loading performance..."}
+        {Meteor.user() ? this.performance() : " "}
       </div>
     )
   }
@@ -57,10 +57,24 @@ export default createContainer(() => {
 
 class UserCheck extends React.Component {
 
+  constructor() {
+    super();
+    this.deletePoll = this.deletePoll.bind(this);
+  }
+
+  deletePoll(target) {
+    Meteor.call('voteData.delete', target)
+  }
+
   render() {
     return (
-      <div>
-        <a href={window.location.origin + "/polls/" + this.props.d.queryID}> {this.props.d.title} </a>
+      <div className="list-group all-polls">
+        <a href={window.location.origin + "/polls/" + this.props.d.queryID}>
+          <button className="list-group-item">
+            <span className="poll-title">{this.props.d.title}</span>
+            <div className="btn-warning poll-author" onClick={() => this.deletePoll(this.props.d.queryID)} > Delete </div>
+          </button>
+        </a>
       </div>
     )
   }

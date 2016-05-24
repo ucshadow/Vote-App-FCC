@@ -11,7 +11,7 @@ class Create extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {rows: this.purpose(), showURL: null}; // old getInitialState()
+    this.state = {rows: this.purpose(), showURL: null, u: [Meteor.user()]}; // old getInitialState()
 
     // bind all functions to the class Scope (I think this should be done for class --> extends)
     // because this way does not bind the functions to the Class scope like with React.createClass({})
@@ -21,6 +21,7 @@ class Create extends React.Component {
     this.showURL = this.showURL.bind(this);
     this.purpose = this.purpose.bind(this);
     this.getValue = this.getValue.bind(this);
+    this.logS = this.logS.bind(this)
   }
 
   purpose(){
@@ -108,9 +109,11 @@ class Create extends React.Component {
           this.showURL([queryID]);
         }
       } else {
-        console.log('give a title and at least 2 options')
+        console.log('give a title and at least 2 options');
         // todo add error message
       }
+    } else {
+      $("#alerts").text("Log in to create");
     }
   }
 
@@ -120,34 +123,44 @@ class Create extends React.Component {
     }
   }
 
+  logS() {
+    console.log(this.state.u);
+    return [Meteor.user()].map((x) => {
+      return <Test key={Math.random()} d={x} />
+    })
+  }
+
   render() {
-    if(Meteor.user()){
-      return (
-        <div>
-          <div className="create-container col-lg-6">
-            <div className="input-group input-group-lg">
-              <span className="input-group-addon" id="pollTitle">Title</span>
-              <input type="text" className="form-control" placeholder="Title" id="poll-title"
-              defaultValue={this.props.d ? this.props.d.title : null}/>
-            </div>
-            {this.addRowOptions()}
+    return (
+      <div>
+        <div className="create-container col-lg-6">
+          <div className="input-group input-group-lg">
+            <span className="input-group-addon" id="pollTitle">Title</span>
+            <input type="text" className="form-control" placeholder="Title" id="poll-title"
+            defaultValue={this.props.d ? this.props.d.title : null}/>
           </div>
-          <button onClick={this.addOptionRow}> Add Row </button>
-          <button onClick={this.submitPoll}> Submit </button>
-          <br />
-          <div>
-            {this.state.showURL ? window.location.origin + "/polls/" + this.state.showURL : null}
-          </div>
+          {this.addRowOptions()}
         </div>
-      )
-    } else {
-      return (
+        <button onClick={this.addOptionRow}> Add Row </button>
+        <button onClick={this.submitPoll}> Submit </button>
+        <br />
         <div>
-          <h1> Please Log In to create a Poll </h1>
+          {this.state.showURL ? window.location.origin + "/polls/" + this.state.showURL : null}
         </div>
-      )
-    }
+        <div className="alerts" id="alerts"> </div>
+      </div>
+    )
   }
 }
 
 export default Create;
+
+class Test extends React.Component {
+
+  render() {
+    return (
+      <div> {(this.props.u ? this.props.u.username : "nonono")} </div>
+    )
+  }
+
+}

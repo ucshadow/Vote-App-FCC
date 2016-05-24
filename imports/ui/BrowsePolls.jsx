@@ -10,7 +10,6 @@ export default class BrowsePolls extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {allMyPolls: [0]};
 
     this.getAll = this.getAll.bind(this);
@@ -26,8 +25,12 @@ export default class BrowsePolls extends React.Component {
 
   render() {
     return (
-      <div>
-        {Meteor.user() ? this.getAll() : "Fetching polls..."}
+      <div className="list-group all-polls">
+        <div className="list-group-item">
+          <span className="poll-title">Title</span>
+          <span className="poll-author">Author</span>
+        </div>
+        {this.getAll()}
       </div>
     )
   }
@@ -50,10 +53,12 @@ class DisplayAll extends React.Component {
 
   render() {
     return (
-      <div>
-        <a href={window.location.origin + "/polls/" + this.props.d.queryID}> {this.props.d.title + " "}
-        </a> by {this.props.d.author}
-      </div>
+      <a href={window.location.origin + "/polls/" + this.props.d.queryID}>
+        <button className="list-group-item">
+          <span className="poll-title">{this.props.d.title + " "}</span>
+          <span className="poll-author">{this.props.d.author}</span>
+         </button>
+      </a>
     )
   }
 
