@@ -13,7 +13,7 @@ import { NotFound } from '../imports/ui/NotFound.js';
 import Poll from '../imports/ui/Poll.jsx';
 import EditPoll from '../imports/ui/EditPoll.jsx';
 import MyPolls from '../imports/ui/MyPolls.jsx';
-import BrowsePolls from '../imports/ui/BrowsePolls.jsx'
+import BrowsePolls from '../imports/ui/BrowsePolls.jsx';
 
 
 
@@ -47,6 +47,9 @@ Meteor.startup(() => {
           pollType: "firstPage",
           queryID: Math.random().toString().substring(2, 17)});
       }
+      if(!VoteData.findOne({title: "Who is your favorite Disney Princess"})) {
+        Meteor.call('voteData.insert', p1)
+      }
       //console.log(VoteData.find().fetch())
     }
   });
@@ -68,4 +71,40 @@ Tracker.autorun(function(c) {
   userId ? location.reload() : location.reload()
 });
 
+let p1 = {
+  author: "SHADOW",
+  options: [["Snow White", 12], ["Cinderella", 14], ["Aurora", 14], ["Ariel", 3],
+  ["Belle", 5], ["Jasmine", 2], ["Pocahontas", 7], ["Mulan", 3],
+  ["Tiana", 12], ["Rapunzel", 2], ["Merida", 1], ["Anna", 3]],
+  createdAt: new Date(),
+  title: "Who is your favorite Disney Princess",
+  queryID: Math.random().toString().substring(2, 17)
+};
+
+let p2 = {
+  author: "SHADOW",
+  options: [["Sunday", 4], ["Monday", 14], ["Tuesday", 14], ["Wednesday", 8],
+  ["Thursday", 5], ["Friday", 12], ["Saturday", 7]],
+  createdAt: new Date(),
+  title: "Best day of the week",
+  queryID: Math.random().toString().substring(2, 17)
+};
+
+let p3 = {
+  author: "SHADOW",
+  options: [["Red", 14], ["Green", 1], ["Blue", 6], ["Yellow", 8],
+  ["Pink", 12], ["Orange", 2], ["Brown", 4]],
+  createdAt: new Date(),
+  title: "Best color",
+  queryID: Math.random().toString().substring(2, 17)
+};
+
+let p4 = {
+  author: "SHADOW",
+  options: [["Action", 51], ["Shooter", 23], ["Action-adventure", 60], ["Adventure", 17],
+  ["Role-playing", 62], ["Simulation", 43], ["Sports", 31], ["Strategy", 19], ["Survival horror", 2], ["MMO", 76]],
+  createdAt: new Date(),
+  title: "Favorite game genre",
+  queryID: Math.random().toString().substring(2, 17)
+};
 
