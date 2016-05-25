@@ -68,13 +68,17 @@ class UserCheck extends React.Component {
 
   render() {
     return (
-      <div className="list-group all-polls">
-        <a href={window.location.origin + "/polls/" + this.props.d.queryID}>
-          <button className="list-group-item">
-            <span className="poll-title">{this.props.d.title}</span>
-            <div className="btn-warning poll-author" onClick={() => this.deletePoll(this.props.d.queryID)} > Delete </div>
-          </button>
-        </a>
+      <div>
+        <div className="list-group all-polls">
+          <a href={window.location.origin + "/polls/" + this.props.d.queryID}>
+            <button className="list-group-item">
+              <span className="poll-title">{this.props.d.title}</span>
+
+            </button>
+          </a>
+
+        </div>
+        <div className="delete-poll" onClick={() => this.deletePoll(this.props.d.queryID)} > Delete </div>
       </div>
     )
   }

@@ -43,6 +43,23 @@ export default class ToD3 extends React.Component {
         return x;
       }
 
+      function trim(t) {
+        let toList = t.split(" ");
+        if(toList[0].length > 20) {
+          return toList[0].substring(0, 20)
+        }
+        else if(toList.length > 3) {
+          let res = "";
+          for(let x = 0; x < 3; x ++) {
+            res += toList[x] + " ";
+          }
+          return res;
+        }
+        else {
+          return t;
+        }
+      }
+
       let w = 600;
       let h = 600;
       let r = Math.min(w, h) / 2;
@@ -77,25 +94,26 @@ export default class ToD3 extends React.Component {
         .attr("class", "slice");
 
       arcs.append("svg:path")
-          .attr("fill", function(d, i){
-              return assignColor(i);
-          })
-          .attr("d", function (d) {
-              return arc(d);
-          });
+        .attr("fill", function(d, i){
+            return assignColor(i);
+        })
+        .attr("d", function (d) {
+            return arc(d);
+        })
+        .attr("stroke", function(d){if(d.value === 0){return "none"} return "white"});
 
       // add the text
       arcs.append("svg:text")
         .attr("transform", function(d){return "translate(" + optionArc.centroid(d) + ")";})
         .attr("text-anchor", "middle")
         .attr("class", "chart-text")
-        .attr("dy", ".35em")
+        .attr("dy", ".40em")
         .attr("fill", "white")
         .text( function(d, i) {
           if(data[i].value <= 0) {
             return ""
           } else {
-            return data[i].label
+            return trim(data[i].label)
           }
         });
 

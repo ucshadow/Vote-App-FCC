@@ -19,11 +19,6 @@ body {
   float: left;
 }
 
-
-
-
-
-
 .poll-options {
   padding: 5px;
   position: relative;
@@ -47,10 +42,22 @@ body {
   width: 100%;
   position: absolute;
   height: auto;
+  z-index: 101;
+  padding-left: 0.2em;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.percentage {
+  border: 2px solid black;
+  width: 100%;
+  position: absolute;
+  height: auto;
   z-index: 100;
   padding-left: 0.2em;
   color: white;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  text-align: right;
 }
 
 .empty-bar {
@@ -61,11 +68,41 @@ body {
   z-index: 98;
 }
 
+.a-poll-by {
+  font-size: 2em;
+  margin-top: 2em;
+}
 
 
+.poll-title {
+  color: #77C4D3;
+}
 
+.form-control, .list-group-item {
+  background: #2c2d3a;
+  color: white;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: bold;
+}
 
+button.list-group-item:hover {
+  background: #333745;
+}
 
+.input-group-addon {
+  background: #21222f;
+  color: #e1e1e1;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+  font-weight: bold;
+}
+
+#alerts {
+  color: #EA2E49;
+}
+
+.edit-button {
+  margin-left: 54px;
+}
 
 .click-to-vote {
   background: #DAEDE2;
@@ -77,10 +114,6 @@ body {
 
 .home-div {
   margin-left: 5em;
-}
-
-.slice path {
-  stroke: #fff;
 }
 
 .display-poll {
@@ -127,7 +160,7 @@ body {
 
 #navbarCollapse {
   background: #DAEDE2;
-  margin-right: 5em;
+  margin-right: 6em;
   padding: 4px;
 }
 
@@ -170,4 +203,28 @@ body {
 .poll-author {
   float: right;
   color: #EA2E49;
+}
+
+.delete-poll {
+  float: right;
+  color: #EA2E49;
+  margin-top: -2.7em;
+  position: relative;
+  left: -8em;
+  height: 2em;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.delete-poll:hover {
+  color: green;
+}
+
+.list-frameworks {
+  font-size: 1em;
+}
+
+.logo {
+  width: 64px;
+  height: 64px;
 }

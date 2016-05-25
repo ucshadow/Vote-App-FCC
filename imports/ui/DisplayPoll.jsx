@@ -46,6 +46,9 @@ class Singleton extends React.Component {
     this.state = {voted: (JSON.parse(localStorage.p).indexOf(window.location.pathname) >= 0)};
     this.hasVoted = this.hasVoted.bind(this);
     this.totalVotes = this.totalVotes.bind(this);
+    this.trimText = this.trimText.bind(this);
+    this.mEnter = this.mEnter.bind(this);
+    this.mLeave = this.mLeave.bind(this);
   }
 
   checkOPT() {
@@ -87,17 +90,54 @@ class Singleton extends React.Component {
     return total;
   }
 
+  trimText(t) {
+    let toList = t.split(" ");
+    if(toList[0].length > 20) {
+      return toList[0].substring(0, 20)
+    }
+    else if(toList.length > 3) {
+      let res = "";
+      for(let x = 0; x < 3; x ++) {
+        res += toList[x] + " ";
+      }
+      return res;
+    }
+    else {
+      return t;
+    }
+  }
+
+  mEnter(t) {
+    let toList = t.split(" ");
+    if(toList[0].length > 20 || toList.length > 3) {
+      $("#alerts").text(t);
+    }
+  }
+
+  mLeave() {
+    $("#alerts").text("");
+  }
+
   render() {
     return (
       <div className="display-poll">
-        <h1 style={{color: "#EA2E49"}}>A poll by {this.props.data.author} </h1>
+        <div className="a-poll-by">
+          A poll by
+          <span style={{color: "#EA2E49"}}> {this.props.data.author}
+          </span>
+        </div>
         <h2> {this.props.data.title} </h2>
         <div className="some-other-container">
           {this.props.data.options.map((option) => {
             return (
               <div className="row poll-options" key={option[0] + '-' + Math.random()}>
 
-                <div className="o-txt">{option[0]}</div>
+                <div className="o-txt"
+                onMouseEnter={() => this.mEnter(option[0])} onMouseLeave={() => this.mLeave(option[0])}
+                >{this.trimText(option[0])}</div>
+                <div className="percentage">{
+                  this.state.voted ? (option[1] * 100 / this.totalVotes()).toString().split(".")[0] + "%" : ""
+                  }</div>
                 <div className="empty-bar"> &#8195; </div>
 
                 {this.state.voted === false
@@ -120,11 +160,16 @@ class Singleton extends React.Component {
         </div>
         <br />
         <div className="edit-button">
-          <button className="btn-primary" onClick={ () => this.voteFor(this.props.data._id,
-            this.checkOPT() ? this.checkOPT().value : null) }>
-            Submit
-          </button>
-          <Link to={"/edit/" + this.props.data.queryID}><button className="btn-success"> Edit</button></Link>
+          { this.state.voted ? <div> </div> :
+            <button className="btn-primary" onClick={ () => this.voteFor(this.props.data._id,
+              this.checkOPT() ? this.checkOPT().value : null) }>
+              Submit
+            </button>
+          }
+          <Link to={"/edit/" + this.props.data.queryID}>
+            <button className="btn-success" style={{"float": "right"}}> Edit
+            </button>
+          </Link>
         </div>
         <ToD3 key={Math.random()} d={this.props.data} />
         <br />

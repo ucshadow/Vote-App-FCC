@@ -93,7 +93,8 @@ class Create extends React.Component {
           pollObject.options.push([opt, 0])
         }
       }
-      pollObject.title = document.getElementById("poll-title").value;
+      pollObject.title = document.getElementById("poll-title__").value;
+      console.log(pollObject.title);
       pollObject.author = author;
       pollObject.createdAt = createdAt;
       pollObject.queryID = queryID;
@@ -109,8 +110,7 @@ class Create extends React.Component {
           this.showURL([queryID]);
         }
       } else {
-        console.log('give a title and at least 2 options');
-        // todo add error message
+        $("#alerts").text('Give the Poll a title and at least 2 options');
       }
     } else {
       $("#alerts").text("Log in to create");
@@ -134,19 +134,23 @@ class Create extends React.Component {
     return (
       <div>
         <div className="create-container col-lg-6">
-          <div className="input-group input-group-lg">
+          <div className="input-group input-group-lg"  id="poll-title">
             <span className="input-group-addon" id="pollTitle">Title</span>
-            <input type="text" className="form-control" placeholder="Title" id="poll-title"
+            <input type="text" className="form-control" placeholder="Title" id="poll-title__"
             defaultValue={this.props.d ? this.props.d.title : null}/>
           </div>
           {this.addRowOptions()}
         </div>
-        <button onClick={this.addOptionRow}> Add Row </button>
-        <button onClick={this.submitPoll}> Submit </button>
+        <div className="create-buttons">
+          <button className="btn btn-primary btn-lg" onClick={this.addOptionRow}> Add Row </button>
+          <button style={{"marginLeft": "5px"}}
+            className="btn btn-success btn-lg" onClick={this.submitPoll}> Submit </button>
+        </div>
         <br />
         <div>
           {this.state.showURL ? window.location.origin + "/polls/" + this.state.showURL : null}
         </div>
+        <br />
         <div className="alerts" id="alerts"> </div>
       </div>
     )
